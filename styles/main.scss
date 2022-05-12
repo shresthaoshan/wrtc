@@ -36,10 +36,17 @@ body {
 		border-radius: 10px;
 		overflow: hidden;
 
+		@media (max-width: 480px) {
+			width: 200px;
+			height: 115px;
+			top: auto;
+			bottom: 30px;
+		}
+
 		video {
 			object-fit: cover;
 		}
-		
+
 		&.alone {
 			top: 0;
 			left: 0;
@@ -47,6 +54,5 @@ body {
 			height: 100%;
 			border-radius: 0;
 		}
-
 	}
 }
