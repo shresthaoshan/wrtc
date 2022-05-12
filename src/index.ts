@@ -1,6 +1,3 @@
-import dotenv from "dotenv";
-dotenv.config();
-
 import AgoraRTM, { RtmChannel, RtmClient, RtmMessage } from "agora-rtm-sdk";
 import Toastify from "toastify-js";
 import { nanoid } from "nanoid";
