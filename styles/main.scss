@@ -35,6 +35,7 @@ body {
 		height: 165px;
 		border-radius: 10px;
 		overflow: hidden;
+		transition: .2s ease-in-out;
 
 		@media (max-width: 480px) {
 			width: 115px;
