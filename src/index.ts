@@ -97,6 +97,7 @@ const handleUserJoin = async (memberId: string) => {
 	createOffer(memberId);
 };
 const handleUserLeave = async (memberId: string) => {
+	remoteStream = null;
 	yourVideoContainer.classList.add("absent");
 	myVideoContainer.classList.add("alone");
 };
