@@ -30,13 +30,6 @@ const servers: RTCConfiguration = {
 	],
 };
 
-const addClass = (elem: HTMLElement, className: string) => {
-	if (!elem.classList.contains(className)) elem.classList.add(className);
-};
-const removeClass = (elem: HTMLElement, className: string) => {
-	if (elem.classList.contains(className)) elem.classList.remove(className);
-};
-
 export const createLocalStream = async () => {
 	localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
 	myVideo.srcObject = localStream;
@@ -49,8 +42,8 @@ export const createRemoteStream = async () => {
 
 export const createPeerConnection = async (memberId: string) => {
 	await createRemoteStream();
-	removeClass(yourVideoContainer, "absent");
-	removeClass(myVideoContainer, "alone");
+	yourVideoContainer.classList.remove("absent");
+	myVideoContainer.classList.remove("alone");
 	peerConnection = new RTCPeerConnection(servers);
 
 	localStream.getTracks().forEach((track) => {
@@ -104,12 +97,12 @@ const handleUserJoin = async (memberId: string) => {
 	createOffer(memberId);
 };
 const handleUserLeave = async (memberId: string) => {
-	addClass(yourVideoContainer, "absent");
-	addClass(myVideoContainer, "alone");
+	yourVideoContainer.classList.add("absent");
+	myVideoContainer.classList.add("alone");
 };
 const handleUserExit = async () => {
-	channel.leave();
-	client.logout();
+	await channel.leave();
+	await client.logout();
 };
 
 const handleMessageReceived = async (message: RtmMessage, peerId: string) => {
@@ -149,6 +142,6 @@ const init = async () => {
 	client.on("MessageFromPeer", handleMessageReceived);
 };
 
-window.addEventListener("beforeunload", handleUserExit)
+window.addEventListener("beforeunload", handleUserExit);
 
 init();
