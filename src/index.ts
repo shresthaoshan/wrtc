@@ -67,9 +67,9 @@ export const createPeerConnection = async (memberId: string) => {
 			remoteStream.addTrack(track);
 		});
 	};
-	peerConnection.onconnectionstatechange = async (ev) => {
-		peerConnection = ev.currentTarget as RTCPeerConnection;
-	};
+	// peerConnection.onconnectionstatechange = async (ev) => {
+	// 	peerConnection = ev.currentTarget as RTCPeerConnection;
+	// };
 
 	peerConnection.onicecandidate = async (event) => {
 		if (event.candidate) {
@@ -81,7 +81,7 @@ export const createPeerConnection = async (memberId: string) => {
 
 export const createOffer = async (memberId: string) => {
 	if (!localStream) await createLocalStream();
-	await createPeerConnection(memberId);
+	if (!peerConnection) await createPeerConnection(memberId);
 
 	let offer = await peerConnection.createOffer();
 	await peerConnection.setLocalDescription(offer);
@@ -114,6 +114,7 @@ const handleUserJoin = async (memberId: string) => {
 };
 const handleUserLeave = async (memberId: string) => {
 	remoteStream = null;
+	peerConnection = null;
 	yourVideoContainer.classList.add("absent");
 	myVideoContainer.classList.add("alone");
 	toast("User left.");
