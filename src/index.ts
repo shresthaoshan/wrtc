@@ -1,11 +1,14 @@
 import dotenv from "dotenv";
 dotenv.config();
 
-import AgoraRTM, { RtmClient, RtmMessage } from "agora-rtm-sdk";
+import AgoraRTM, { RtmChannel, RtmClient, RtmMessage } from "agora-rtm-sdk";
 import { nanoid } from "nanoid";
 import agoraConfig from "./configs/agora.config";
 import stunConfig from "./configs/stun.config";
 import { MessagePayload } from "./@types/payloads";
+
+const myVideoContainer = document.getElementById("me-container") as HTMLDivElement;
+const yourVideoContainer = document.getElementById("you-container") as HTMLDivElement;
 
 const myVideo = document.getElementById("me") as HTMLVideoElement;
 const yourVideo = document.getElementById("you") as HTMLVideoElement;
@@ -15,7 +18,7 @@ let remoteStream: MediaStream;
 let peerConnection: RTCPeerConnection;
 
 let client: RtmClient;
-let channel;
+let channel: RtmChannel;
 
 const uid = nanoid(14);
 
@@ -25,6 +28,13 @@ const servers: RTCConfiguration = {
 			urls: [stunConfig.SERVER_1, stunConfig.SERVER_2],
 		},
 	],
+};
+
+const addClass = (elem: HTMLElement, className: string) => {
+	if (!elem.classList.contains(className)) elem.classList.add(className);
+};
+const removeClass = (elem: HTMLElement, className: string) => {
+	if (elem.classList.contains(className)) elem.classList.remove(className);
 };
 
 export const createLocalStream = async () => {
@@ -39,6 +49,8 @@ export const createRemoteStream = async () => {
 
 export const createPeerConnection = async (memberId: string) => {
 	await createRemoteStream();
+	removeClass(yourVideoContainer, "absent");
+	removeClass(myVideoContainer, "alone");
 	peerConnection = new RTCPeerConnection(servers);
 
 	localStream.getTracks().forEach((track) => {
@@ -91,6 +103,14 @@ export const addAnswer = async (answer: RTCSessionDescriptionInit) => {
 const handleUserJoin = async (memberId: string) => {
 	createOffer(memberId);
 };
+const handleUserLeave = async (memberId: string) => {
+	addClass(yourVideoContainer, "absent");
+	addClass(myVideoContainer, "alone");
+};
+const handleUserExit = async () => {
+	channel.leave();
+	client.logout();
+};
 
 const handleMessageReceived = async (message: RtmMessage, peerId: string) => {
 	if (message.messageType === "TEXT") {
@@ -124,8 +144,11 @@ const init = async () => {
 	channel = client.createChannel("main");
 	await channel.join();
 
+	channel.on("MemberLeft", handleUserLeave);
 	channel.on("MemberJoined", handleUserJoin);
 	client.on("MessageFromPeer", handleMessageReceived);
 };
+
+window.addEventListener("beforeunload", handleUserExit)
 
 init();

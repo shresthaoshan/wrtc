@@ -9,19 +9,44 @@ body {
 
 .videos {
 	width: 100%;
-	height: 100%;
-	padding: 2em;
-	display: grid;
-	grid-template-columns: 1fr 1fr;
-	gap: 2em;
+	height: 100vh;
 
-	@media (max-width: 560px) {
-		grid-template-columns: 1fr;
-	}
-
-	.video-player {
+	.video {
 		width: 100%;
+		height: 100%;
 		background: #000;
-		height: 500px;
+
+		video {
+			width: 100%;
+			height: 100%;
+			object-fit: contain;
+		}
+		&.absent {
+			display: none;
+		}
+	}
+	.me {
+		position: absolute;
+		top: 30px;
+		left: 30px;
+		z-index: 9;
+		background: blue;
+		width: 300px;
+		height: 165px;
+		border-radius: 10px;
+		overflow: hidden;
+
+		video {
+			object-fit: cover;
+		}
+		
+		&.alone {
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			border-radius: 0;
+		}
+
 	}
 }

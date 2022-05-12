@@ -10,8 +10,12 @@
 	</head>
 	<body>
 		<div class="videos">
-			<video class="video-player" id="me" autoplay playsinline muted></video>
-			<video class="video-player" id="you" autoplay playsinline></video>
+			<div class="video me alone" id="me-container">
+				<video class="video-player" id="me" autoplay playsinline muted></video>
+			</div>
+			<div class="video absent" id="me-container">
+				<video class="video-player" id="you" autoplay playsinline></video>
+			</div>
 		</div>
 
 		<script src="./src/index.ts"></script>
