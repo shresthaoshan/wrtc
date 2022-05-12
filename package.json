@@ -14,8 +14,10 @@
     "dev": "parcel index.html -p 3000 --open"
   },
   "dependencies": {
+    "@types/toastify-js": "^1.11.0",
     "agora-rtm-sdk": "^1.4.4",
     "dotenv": "^16.0.1",
-    "nanoid": "^3.3.4"
+    "nanoid": "^3.3.4",
+    "toastify-js": "^1.11.2"
   }
 }

@@ -1021,6 +1021,11 @@
   resolved "https://registry.yarnpkg.com/@types/q/-/q-1.5.5.tgz#75a2a8e7d8ab4b230414505d92335d1dcb53a6df"
   integrity sha512-L28j2FcJfSZOnL1WBjDYp2vUHCeIFlyYI/53EwD/rKUBQ7MtUUfbQWiyKJGpcnv4/WgrhWsFKrcPstcAt/J0tQ==
 
+"@types/toastify-js@^1.11.0":
+  version "1.11.0"
+  resolved "https://registry.yarnpkg.com/@types/toastify-js/-/toastify-js-1.11.0.tgz#a316be1fe3e164214b2b884266aa33167032f565"
+  integrity sha512-ifVUCImUYrnX1SraZrBS8GDXhWTwuTXZYRbftqrKHiwe6TVUO8mp441A4fYG8LXdyuiEavCdcgdLw3QBerK6oQ==
+
 abab@^2.0.0:
   version "2.0.6"
   resolved "https://registry.yarnpkg.com/abab/-/abab-2.0.6.tgz#41b80f2c871d19686216b82309231cfd3cb3d291"
@@ -5255,6 +5260,11 @@ to-regex@^3.0.1, to-regex@^3.0.2:
     extend-shallow "^3.0.2"
     regex-not "^1.0.2"
     safe-regex "^1.1.0"
+
+toastify-js@^1.11.2:
+  version "1.11.2"
+  resolved "https://registry.yarnpkg.com/toastify-js/-/toastify-js-1.11.2.tgz#5c66cb05cee30b09e5bd8961ab809e41a3ce716c"
+  integrity sha512-bMBNKhZLPX/sDhpwM7KHIRUTtqCylQeoZDiEWy5zE7iDUJ92XmP8AKgDAp9rXx6pR5GXGFtQHHoH62toahbHgQ==
 
 toidentifier@1.0.1:
   version "1.0.1"

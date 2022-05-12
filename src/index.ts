@@ -2,10 +2,13 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import AgoraRTM, { RtmChannel, RtmClient, RtmMessage } from "agora-rtm-sdk";
+import Toastify from "toastify-js";
 import { nanoid } from "nanoid";
 import agoraConfig from "./configs/agora.config";
 import stunConfig from "./configs/stun.config";
 import { MessagePayload } from "./@types/payloads";
+
+import "toastify-js/src/toastify.css";
 
 const myVideoContainer = document.getElementById("me-container") as HTMLDivElement;
 const yourVideoContainer = document.getElementById("you-container") as HTMLDivElement;
@@ -30,6 +33,14 @@ const servers: RTCConfiguration = {
 	],
 };
 
+const toast = (message: string) => {
+	Toastify({
+		text: message,
+		gravity: "top",
+		position: "center",
+	}).showToast();
+};
+
 export const createLocalStream = async () => {
 	localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
 	myVideo.srcObject = localStream;
@@ -51,9 +62,13 @@ export const createPeerConnection = async (memberId: string) => {
 	});
 
 	peerConnection.ontrack = (event) => {
+		toast("Tracks online...");
 		event.streams[0].getTracks().forEach((track) => {
 			remoteStream.addTrack(track);
 		});
+	};
+	peerConnection.onconnectionstatechange = async (ev) => {
+		peerConnection = ev.currentTarget as RTCPeerConnection;
 	};
 
 	peerConnection.onicecandidate = async (event) => {
@@ -66,7 +81,7 @@ export const createPeerConnection = async (memberId: string) => {
 
 export const createOffer = async (memberId: string) => {
 	if (!localStream) await createLocalStream();
-	if (!peerConnection) await createPeerConnection(memberId);
+	await createPeerConnection(memberId);
 
 	let offer = await peerConnection.createOffer();
 	await peerConnection.setLocalDescription(offer);
@@ -94,12 +109,14 @@ export const addAnswer = async (answer: RTCSessionDescriptionInit) => {
 };
 
 const handleUserJoin = async (memberId: string) => {
+	toast("Joined: " + memberId);
 	createOffer(memberId);
 };
 const handleUserLeave = async (memberId: string) => {
 	remoteStream = null;
 	yourVideoContainer.classList.add("absent");
 	myVideoContainer.classList.add("alone");
+	toast("User left.");
 };
 const handleUserExit = async () => {
 	await channel.leave();
@@ -137,6 +154,7 @@ const init = async () => {
 
 	channel = client.createChannel("main");
 	await channel.join();
+	toast("Channel online!");
 
 	channel.on("MemberLeft", handleUserLeave);
 	channel.on("MemberJoined", handleUserJoin);
