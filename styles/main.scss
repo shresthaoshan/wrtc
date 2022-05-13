@@ -35,13 +35,14 @@ body {
 		height: 165px;
 		border-radius: 10px;
 		overflow: hidden;
-		transition: .2s ease-in-out;
+		transition: 0.2s ease-in-out;
 
 		@media (max-width: 480px) {
 			width: 115px;
 			height: 200px;
-			top: auto;
-			bottom: 15px;
+			left: 10px;
+			top: calc(100% - 210px);
+			// bottom: 15px;
 		}
 
 		video {
