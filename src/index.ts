@@ -13,7 +13,11 @@ const yourVideoContainer = document.getElementById("you-container") as HTMLDivEl
 const myVideo = document.getElementById("me") as HTMLVideoElement;
 const yourVideo = document.getElementById("you") as HTMLVideoElement;
 
-let localStream: MediaStream;
+const controlCall = document.getElementById("control-call");
+const controlVoice = document.getElementById("control-voice");
+const controlVideo = document.getElementById("control-video");
+
+let localStream: MediaStream; 
 let remoteStream: MediaStream;
 let peerConnection: RTCPeerConnection;
 
@@ -120,6 +124,37 @@ const handleUserExit = async () => {
 	await channel.leave();
 	await client.logout();
 };
+const toggleVideo = async () => {
+	const videoTrack = localStream.getTracks().find((track) => track.kind === "video");
+
+	if (videoTrack.enabled) {
+		videoTrack.enabled = false;
+		if (!controlVideo.classList.contains("disabled")) {
+			controlVideo.classList.add("disabled");
+		}
+	} else {
+		videoTrack.enabled = true;
+		if (controlVideo.classList.contains("disabled")) {
+			controlVideo.classList.remove("disabled");
+		}
+	}
+};
+
+const toggleAudio = async () => {
+	const audioTrack = localStream.getTracks().find((track) => track.kind === "audio");
+
+	if (audioTrack.enabled) {
+		audioTrack.enabled = false;
+		if (!controlVoice.classList.contains("disabled")) {
+			controlVoice.classList.add("disabled");
+		}
+	} else {
+		audioTrack.enabled = true;
+		if (controlVoice.classList.contains("disabled")) {
+			controlVoice.classList.remove("disabled");
+		}
+	}
+};
 
 const handleMessageReceived = async (message: RtmMessage, peerId: string) => {
 	if (message.messageType === "TEXT") {
@@ -160,5 +195,8 @@ const init = async () => {
 };
 
 window.addEventListener("beforeunload", handleUserExit);
+controlVideo.addEventListener("click", toggleVideo);
+controlVoice.addEventListener("click", toggleAudio);
+controlCall.addEventListener("click", handleUserExit);
 
 init();
