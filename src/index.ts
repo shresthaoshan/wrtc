@@ -131,7 +131,7 @@ const handleUserJoin = async (memberId: string) => {
 	toast("Joined: " + memberId);
 	createOffer(memberId);
 };
-const handleUserLeave = async (memberId: string) => {
+const handleUserLeave = async () => {
 	remoteStream = null;
 	peerConnection.close();
 	peerConnection = null;
@@ -140,8 +140,7 @@ const handleUserLeave = async (memberId: string) => {
 	toast("User left.");
 };
 const handleUserExit = async () => {
-	remoteStream = null;
-	peerConnection = null;
+	await handleUserLeave();
 	await channel.leave();
 	await client.logout();
 };
