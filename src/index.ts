@@ -133,6 +133,7 @@ const handleUserJoin = async (memberId: string) => {
 };
 const handleUserLeave = async (memberId: string) => {
 	remoteStream = null;
+	peerConnection.close();
 	peerConnection = null;
 	yourVideoContainer.classList.add("absent");
 	myVideoContainer.classList.add("alone");
