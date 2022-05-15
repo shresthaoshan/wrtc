@@ -17,7 +17,7 @@ const controlCall = document.getElementById("control-call");
 const controlVoice = document.getElementById("control-voice");
 const controlVideo = document.getElementById("control-video");
 
-let localStream: MediaStream; 
+let localStream: MediaStream;
 let remoteStream: MediaStream;
 let peerConnection: RTCPeerConnection;
 
@@ -43,7 +43,25 @@ const toast = (message: string) => {
 };
 
 export const createLocalStream = async () => {
-	localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+	localStream = await navigator.mediaDevices.getUserMedia({
+		video: {
+			aspectRatio: 1920 / 1080,
+			width: {
+				ideal: 1920,
+				max: 1920,
+				min: 640,
+			},
+			height: {
+				ideal: 1080,
+				max: 1080,
+				min: 480,
+			},
+		},
+		audio: {
+			suppressLocalAudioPlayback: true,
+			echoCancellation: true,
+		},
+	});
 	myVideo.srcObject = localStream;
 };
 
@@ -121,6 +139,8 @@ const handleUserLeave = async (memberId: string) => {
 	toast("User left.");
 };
 const handleUserExit = async () => {
+	remoteStream = null;
+	peerConnection = null;
 	await channel.leave();
 	await client.logout();
 };
